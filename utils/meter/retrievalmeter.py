@@ -44,9 +44,9 @@ class RetrievalMAPMeter(meter.Meter):
             sum = 0
             precision = []
             for j in range(self.topk):
-                if truth[j]:
-                    sum += 1
-                    precision.append(sum * 1.0 / (j + 1))
+                    if truth[j]:
+                        sum += 1
+                        precision.append(sum * 1.0 / (j + 1))
             if len(precision) == 0:
                 ap = 0
             else:

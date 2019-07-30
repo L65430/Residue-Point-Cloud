@@ -2,7 +2,7 @@ from models import *
 
 
 class DGCNN(nn.Module):
-    def __init__(self, n_neighbor=20, num_classes=20):
+    def __init__(self, n_neighbor=20, num_classes=40):
         super(DGCNN, self).__init__()
         self.n_neighbor = n_neighbor
         self.trans_net = transform_net(6, 3)
@@ -21,7 +21,8 @@ class DGCNN(nn.Module):
         )
         self.mlp3 = nn.Linear(256, num_classes)
 
-    def forward(self, x):
+    def forward(self, x,get_fea=False):
+        x=x
         x_edge = get_edge_feature(x, self.n_neighbor)
         x_trans = self.trans_net(x_edge)
         x = x.squeeze().transpose(2, 1)
@@ -50,9 +51,13 @@ class DGCNN(nn.Module):
 
         net = x5.view(x5.size(0), -1)
         net = self.mlp1(net)
-        net = self.mlp2(net)
-        net = self.mlp3(net)
+        net_fea = self.mlp2(net)
+        net = self.mlp3(net_fea)
 
-        return net
+        if get_fea==True:
+            return net,net_fea
+        else:
+            return net
+
 
 

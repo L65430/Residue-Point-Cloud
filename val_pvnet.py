@@ -5,7 +5,7 @@ import os.path as osp
 from utils import meter
 from torch import nn
 from torch import optim
-from models import PVNet2, PVNet2_v4, PVNet2_v5, PVNet2_v7, PVNet2_v9
+from models import PVNet2_v9
 from torch.utils.data import DataLoader
 from datasets import *
 

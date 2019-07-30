@@ -22,5 +22,6 @@ def init_env():
     # check_dir(view_net.ckpt_record_folder)
     # check_dir(pc_net.ckpt_record_folder)
 
-    check_dir(view_net.data_root, create=False)
+    # check_dir(view_net.data_root, create=False)
     check_dir(pc_net.data_root, create=False)
+    check_dir(multi_pc_net.data_root,create=False)

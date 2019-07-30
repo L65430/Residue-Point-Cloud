@@ -27,6 +27,50 @@ def get_info(shapes_dir, isView=False):
 
     return names_dict
 
+class multi_pc_data(Dataset):
+    def __init__(self, pc_root, status='train', pc_input_num=1024):
+        super(multi_pc_data, self).__init__()
+
+        self.status = status
+        self.pc_list = []
+        self.lbl_list = []
+        self.pc_input_num = pc_input_num
+
+        categorys = glob(osp.join(pc_root, '*'))
+        categorys = [c.split(osp.sep)[-1] for c in categorys]
+        sorted(categorys)
+
+        if status == STATUS_TRAIN:
+            npy_list = glob(osp.join(pc_root, '*', 'train', '*.npy'))
+        else:
+            npy_list = glob(osp.join(pc_root, '*', 'test', '*.npy'))
+        names_dict = get_info(npy_list, isView=True)
+
+        for name, _dirs in names_dict.items():
+            self.pc_list.append(_dirs)
+            self.lbl_list.append(categorys.index('_'.join(name.split('_')[:-1])))
+
+        self.pc_view_num = len(self.pc_list[0])
+
+        print(f'{status} data num: {len(self.pc_list)}')
+
+
+    def __getitem__(self, idx):
+        lbl = self.lbl_list[idx]
+        pcs=[]
+        for pc_first in self.pc_list[idx]:
+            pc=np.load(pc_first)[:self.pc_input_num].astype(np.float32)
+            # pc=normal_pc(pc)
+            if self.status == STATUS_TRAIN:
+                pc = pc_aug_funs(pc)
+            pc = np.expand_dims(pc.transpose(),axis=2)
+            pc = torch.from_numpy(pc).float()
+            pcs.append(pc)
+        return torch.stack(pcs).float(),lbl
+
+    def __len__(self):
+        return len(self.pc_list)
+
 
 class pc_data(Dataset):
     def __init__(self, pc_root, status='train', pc_input_num=1024):
@@ -57,7 +101,7 @@ class pc_data(Dataset):
     def __getitem__(self, idx):
         lbl = self.lbl_list[idx]
         pc = np.load(self.pc_list[idx])[:self.pc_input_num].astype(np.float32)
-        pc = normal_pc(pc)
+        # pc = normal_pc(pc)
         if self.status == STATUS_TRAIN:
             pc = pc_aug_funs(pc)
         pc = np.expand_dims(pc.transpose(), axis=2)

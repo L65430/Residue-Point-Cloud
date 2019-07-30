@@ -70,7 +70,7 @@ class BaseFeatureNet(nn.Module):
 
         # max view pooling
         x_view = x.view(batch_sz, view_num, -1)
-        x, _ = torch.max(x_view, 1)
+        x, _ = torch.max(x_view, 1)#get the biggest view
         # else:
         #     x = self.features(x)
         #     x = x.view(x.size(0), -1)

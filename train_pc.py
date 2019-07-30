@@ -143,7 +143,7 @@ def main():
             best_prec1 = prec1
             save_ckpt(epoch, best_prec1, net, optimizer)
 
-        save_record(epoch, prec1, net.module)
+        # save_record(epoch, prec1, net.module)
         print('curr accuracy: ', prec1)
         print('best accuracy: ', best_prec1)
 

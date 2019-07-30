@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="youhaoxuan@166.111.80.51:22">
+  <component name="PublishConfigData" autoUpload="Always" serverName="ym@166.111.80.50:22">
     <serverData>
-      <paths name="youhaoxuan@166.111.80.51:22">
+      <paths name="ym@166.111.80.50:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/youhaoxuan/code/pvnet++_torch" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/ym/projects/graduate" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

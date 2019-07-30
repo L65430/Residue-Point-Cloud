@@ -3,7 +3,7 @@ import config
 from utils import meter
 from torch import nn
 from torch import optim
-from models import PVNet2, PVNet2_v4, PVNet2_v5, PVNet2_v6, PVNet2_v7, PVNet2_v8, PVNet2_v9, PVNet2_v10, PVNet2_v11, PVNet2_v12, PVNet2_v13, PVNet2_v14, PVNet2_v15, PVNet2_vv0, PVNet2_vv1
+from models import PVNet2_v9
 from torch.utils.data import DataLoader
 from datasets import *
 
@@ -68,7 +68,7 @@ def validate(val_loader, net, epoch):
         labels = labels.to(device=config.device)
 
         preds, fts = net(pcs, views, get_fea=True)  # bz x C x H x W
-        # prec.add(preds.data, labels.data)
+        prec.add(preds.data, labels.data)
 
         prec.add(preds.data, labels.data)
         retrieval_map.add(fts.detach(), labels.detach())
@@ -136,7 +136,7 @@ def main():
     epoch_pc = 0
 
     # create model
-    net = PVNet2_vv1()
+    net = PVNet2_v9()
     net = net.to(device=config.device)
     net = nn.DataParallel(net)
 

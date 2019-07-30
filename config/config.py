@@ -2,16 +2,17 @@ import os.path as osp
 import models
 
 # configuration file
-description  = 'pv_net'
+description  = 'multi_pc_net'
 version_string  = '0.1'
 
 # device can be "cuda" or "gpu"
 device = 'cuda'
 num_workers = 4
-available_gpus = '0,1,2,3'
+available_gpus = '4,5,6,7'
+# available_gpus = '0,2,3'
 print_freq = 15
 
-result_root = '/home/youhaoxuan/result/aaai2018_result'
+result_root = '/home/ym/projects/result'
 result_sub_folder = osp.join(result_root, f'{description}_{version_string}_torch')
 ckpt_folder = osp.join(result_sub_folder, 'ckpt')
 
@@ -22,17 +23,20 @@ base_model_name = models.ALEXNET
 # base_model_name = models.INCEPTION_V3
 
 
+
+
 class pc_net:
-    data_root = '/home/youhaoxuan/data/pc'
+    data_root = '/repository/ModelNet40_npy'
     # data_root = '/home/fengyifan/data/pc'
     n_neighbor = 20
     num_classes = 40
     pre_trained_model = None
-    ckpt_file = osp.join(ckpt_folder, 'PCNet-ckpt.pth')
-    ckpt_record_folder = osp.join(ckpt_folder, 'PCNet-record')
+    # ckpt_file = osp.join(ckpt_folder, 'PCNet-ckpt.pth')
+    ckpt_file = osp.join(ckpt_folder, 'nochange-pc-release-v1-ckpt.pth')
+    ckpt_record_folder = osp.join(ckpt_folder, 'single-pc-record')
 
     class train:
-        batch_sz = 48
+        batch_sz = 24*4
         resume = False
         resume_epoch = None
 
@@ -75,9 +79,9 @@ class view_net:
         resume = False
         resume_epoch = None
 
-        lr = 0.001
+        lr = 0.0001
         momentum = 0.9
-        weight_decay = 1e-4
+        weight_decay = 0
         max_epoch = 200
         data_aug = True
 
@@ -86,6 +90,33 @@ class view_net:
 
     class test:
         batch_sz = 32
+
+class multi_pc_net:
+    data_root = '/repository/4_ModelNet40_npy'
+    # data_root = '/home/fengyifan/data/pc'
+    n_neighbor = 20
+    num_classes = 40
+    pre_trained_model = None
+    # ckpt_file = osp.join(ckpt_folder, 'PCNet-ckpt.pth')
+    ckpt_file = osp.join(ckpt_folder, '4-pc-release-v1-ckpt.pth')
+    ckpt_record_folder = osp.join(ckpt_folder, 'multi-pc-record')
+
+    class train:
+        batch_sz = 24
+        resume = False
+        resume_epoch = None
+
+        lr = 0.001
+        momentum = 0.9
+        weight_decay = 1e-4
+        max_epoch = 200
+        data_aug = True
+
+    class validation:
+        batch_sz = 24
+
+    class test:
+        batch_sz = 16
 
 class pv_net:
     num_classes = 40
@@ -97,18 +128,22 @@ class pv_net:
     # multi-view cnn
     view_root = '/home/youhaoxuan/data/12_ModelNet40'
 
-    pre_trained_model = None
+    pre_trained_model = False
     # ckpt_file = osp.join(ckpt_folder, f'PVNet2-{base_model_name}-vsiglogabs_3mlp-ckpt.pth')
-    ckpt_file = osp.join(ckpt_folder, f'PVNet2-{base_model_name}-mean-ckpt.pth')
+    # ckpt_file = osp.join(ckpt_folder, f'PVNet2-{base_model_name}-mean-ckp.pth')
+    # ckpt_file = osp.join(ckpt_folder, f'PVNet2-{base_model_name}-pmv-ckpt.pth')
+    ckpt_file = osp.join(ckpt_folder, f'PVNet2-{base_model_name}-v9-release-ckpt.pth')
+    # ckpt_file = osp.join(ckpt_folder, f'PVNet2-{base_model_name}-v94-ckpt.pth')
+    # ckpt_file = osp.join(ckpt_folder, f'PVNet2-{base_model_name}-DyIntraMAF-ckpt.pth')
     ckpt_record_folder = osp.join(ckpt_folder, f'PVNet2-{base_model_name}-record')
 
     class train:
         # optim = 'Adam'
         optim = 'SGD'
         # batch_sz = 18*2
-        batch_sz = 18*4
-        batch_sz_res = 5*4
-        resume = True
+        batch_sz = 18*5
+        batch_sz_res = 5*1
+        resume = False
         resume_epoch = None
 
         iter_train = True
