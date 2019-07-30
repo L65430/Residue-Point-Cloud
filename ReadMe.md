@@ -1,4 +1,4 @@
-#Residue Point Cloud Concatenation
+Residue Point Cloud Concatenation
 
 Point Cloud is a kind of data which can be used to describe the 3D object, because of the limitaion of the Lidar. Sometimes we can only get some residue *point cloud data*.
 ![image](images/pointcloud.png)
